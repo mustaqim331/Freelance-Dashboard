@@ -1,0 +1,117 @@
+<!-- views/partials/navbar.ejs -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-2 mb-4 shadow-sm">
+  <div class="container-fluid">
+    <!-- Website Brand Name -->
+    <a class="navbar-brand fw-bold fs-4" href="/book">Uni Booking System</a>
+
+    <!-- Right Side: Profile / Auth Actions -->
+    <div class="ms-auto d-flex align-items-center">
+      <% if (currentUser) { %>
+        <!-- User Profile Dropdown -->
+        <div class="dropdown">
+          <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" 
+             href="#" 
+             id="userProfileDropdown" 
+             role="button" 
+             data-bs-toggle="dropdown" 
+             aria-expanded="false" 
+             style="cursor: pointer;">
+            
+            <!-- User Avatar Image -->
+            <img src="<%= currentUser.profilePicture || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(currentUser.name) %>" 
+                 alt="Profile Picture" 
+                 class="rounded-circle border border-2 border-light" 
+                 width="40" 
+                 height="40" 
+                 style="object-fit: cover;">
+
+            <!-- Name and Role Tag -->
+            <div class="d-none d-sm-block text-start">
+              <span class="d-block fw-semibold text-white lh-1 small"><%= currentUser.name %></span>
+              <span class="badge bg-primary rounded-pill mt-1" style="font-size: 0.65rem;"><%= currentUser.role %></span>
+            </div>
+          </a>
+
+          <!-- Dropdown Card -->
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2 p-3" 
+              aria-labelledby="userProfileDropdown" 
+              style="min-width: 260px; border-radius: 12px;">
+            
+            <!-- Account Info Header -->
+            <li class="pb-2 mb-2 border-bottom text-center">
+              <img src="<%= currentUser.profilePicture || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(currentUser.name) %>" 
+                   alt="Profile Picture" 
+                   class="rounded-circle mb-2 border" 
+                   width="56" 
+                   height="56" 
+                   style="object-fit: cover;">
+              <h6 class="fw-bold mb-0 text-dark"><%= currentUser.name %></h6>
+              <p class="text-muted small mb-1"><%= currentUser.email %></p>
+              <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill"><%= currentUser.role %></span>
+            </li>
+
+            <!-- Navigation Links -->
+            <li>
+              <a class="dropdown-menu-item d-flex align-items-center gap-2 py-2 px-3 text-dark text-decoration-none rounded hover-bg" href="/book">
+                <span>📌</span> Reserve Resources
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-menu-item d-flex align-items-center gap-2 py-2 px-3 text-dark text-decoration-none rounded hover-bg" href="/book/my-bookings">
+                <span>📅</span> My Bookings
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-menu-item d-flex align-items-center gap-2 py-2 px-3 text-dark text-decoration-none rounded hover-bg" href="/book/history">
+                <span>📜</span> Booking History
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-menu-item d-flex align-items-center gap-2 py-2 px-3 text-dark text-decoration-none rounded hover-bg" href="/messages">
+                <span>💬</span> Messages
+              </a>
+            </li>
+
+            <!-- Admin Specific Links -->
+            <% if (currentUser.role === 'ADMIN') { %>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-menu-item d-flex align-items-center gap-2 py-2 px-3 text-warning-emphasis fw-semibold text-decoration-none rounded hover-bg" href="/admin/resources">
+                  <span>⚙️</span> Manage Facilities
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-menu-item d-flex align-items-center gap-2 py-2 px-3 text-warning-emphasis fw-semibold text-decoration-none rounded hover-bg" href="/admin/approvals">
+                  <span>📋</span> Booking Approvals
+                </a>
+              </li>
+            <% } %>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <!-- Logout Button -->
+            <li>
+              <form action="/auth/logout" method="POST" class="m-0">
+                <button type="submit" class="btn btn-outline-danger btn-sm w-100 fw-semibold mt-1">
+                  🚪 Logout
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      <% } else { %>
+        <!-- Guest Actions -->
+        <div class="d-flex gap-2">
+          <a href="/auth/login" class="btn btn-outline-light btn-sm">Login</a>
+          <a href="/auth/register" class="btn btn-primary btn-sm">Register</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .hover-bg:hover {
+    background-color: #f8f9fa;
+  }
+</style>
